@@ -124,5 +124,46 @@ void execute(machine_t* chip) {
         case 0xA000:
             op_annn(&opcode, chip);
             break;
+
+        case 0x8000:
+            switch(opcode & 0xF00F) {
+                case 0x8000:
+                    op_8xy0(&opcode, chip);
+                    break;
+                
+                case 0x8001:
+                    op_8xy1(&opcode, chip);
+                    break;
+
+                case 0x8002:
+                    op_8xy2(&opcode, chip);
+                    break;
+                
+                case 0x8003:
+                    op_8xy3(&opcode, chip);
+                    break;
+                
+                case 0x8004:
+                    op_8xy4(&opcode, chip);
+                    break;
+                
+                case 0x8005:
+                    op_8xy5(&opcode, chip);
+                    break;
+
+                case 0x8006:
+                    op_8xy6(&opcode, chip);
+                    break;
+
+                case 0x8007:
+                    op_8xy7(&opcode, chip);
+                    break;
+
+                case 0x800E:
+                    op_8xye(&opcode, chip);
+                    break;
+                    
+            }
+        break;
     }
 }
