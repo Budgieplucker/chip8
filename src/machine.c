@@ -37,6 +37,7 @@ void init_chip(machine_t* chip, int argc, char* argv[]) {
     chip->dt = 0;
     chip->st = 0;
     memset(&chip->display[0], false, sizeof(chip->display));
+    memset(&chip->keys[0], false, sizeof(chip->keys));
     chip->opcode = 0;
 
     for(int i = 0; i < sizeof(font); i++) {
@@ -162,7 +163,6 @@ void execute(machine_t* chip) {
                 case 0x800E:
                     op_8xye(&opcode, chip);
                     break;
-                    
             }
         break;
     }

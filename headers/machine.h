@@ -15,6 +15,7 @@ typedef struct {
     u8 dt;
     u8 st;
     bool display[0x800];
+    bool keys[0xF];
     u16 opcode;
 
 } machine_t;

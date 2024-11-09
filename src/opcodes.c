@@ -2,27 +2,27 @@
 
 void op_00e0(u16* opcode, machine_t* chip) {
 
-    printf("op: 00e0\n");
+    // printf("op: 00e0\n");
     memset(chip->display, false, sizeof(*chip->display));
 }
 
 void op_00ee(u16* opcode, machine_t* chip) {
 
-    printf("op: 00ee\n");
+    // printf("op: 00ee\n");
     chip->pc = chip->stack.arr[chip->stack.top];
     chip->sp-=1;
 }
 
 void op_1nnn(u16* opcode, machine_t* chip) {
 
-    printf("op: 1nnn\n");
+    // printf("op: 1nnn\n");
     u16 nnn = *opcode & 0x0FFF;
     chip->pc = nnn;
 }   
 
 void op_6xnn(u16* opcode, machine_t* chip) {
 
-    printf("op: 6xnn\n");
+    // printf("op: 6xnn\n");
     u16 x = (*opcode & 0x0F00) >> 8;
     u16 nn = *opcode & 0x00FF;
     chip->regs[x] = nn;
@@ -30,7 +30,7 @@ void op_6xnn(u16* opcode, machine_t* chip) {
 
 void op_7xnn(u16* opcode, machine_t* chip) {
 
-    printf("op: 7xnn\n");
+    // printf("op: 7xnn\n");
     u16 x = (*opcode & 0x0F00) >> 8;
     u16 nn = *opcode & 0x00FF;
     chip->regs[x] += nn;
@@ -38,14 +38,14 @@ void op_7xnn(u16* opcode, machine_t* chip) {
 
 void op_annn(u16* opcode, machine_t* chip) {
 
-    printf("op: annn\n");
+    // printf("op: annn\n");
     u16 nnn = *opcode & 0x0FFF;
     chip->i_reg = nnn;
 }
 
 void op_dxyn(u16* opcode, machine_t* chip) {
 
-    printf("op: dxyn\n");
+    // printf("op: dxyn\n");
     u16 x = ((*opcode & 0x0F00) >> 8);
     u16 y = ((*opcode & 0x00F0) >> 4);
     u16 n = *opcode & 0x000F;
@@ -137,12 +137,14 @@ void op_8xy2(u16* opcode, machine_t* chip) {
 }
 
 void op_8xy3(u16* opcode, machine_t* chip) {
+
     u16 x = (*opcode & 0x0F00) >> 8;
     u16 y = (*opcode & 0x00F0) >> 4;
     chip->regs[x] ^= y;
 }
 
 void op_8xy4(u16* opcode, machine_t* chip) {
+
     u16 x = (*opcode & 0x0F00) >> 8;
     u16 y = (*opcode & 0x00F0) >> 4;
     u16 res = (x + y);
@@ -192,7 +194,63 @@ void op_cxnn(u16* opcode, machine_t* chip);
 void op_ex9e(u16* opcode, machine_t* chip);
 void op_exa1(u16* opcode, machine_t* chip);
 void op_fx07(u16* opcode, machine_t* chip);
-void op_fx0a(u16* opcode, machine_t* chip);
+
+// Key events
+void op_fx0a(u16* opcode, machine_t* chip) {
+    
+    printf("op: fx0a\n");
+    u8 x = (*opcode & 0x0F00) >> 8;
+
+    if(chip->keys[0]) {
+        chip->regs[x] = 0;
+    }
+    else if(chip->keys[1]) {
+        chip->regs[x] = 1;
+    }
+    else if(chip->keys[2]) {
+        chip->regs[x] = 2;
+    }
+    else if(chip->keys[3]) {
+        chip->regs[x] = 3;
+    }
+    else if(chip->keys[4]) {
+        chip->regs[x] = 4;
+    }
+    else if(chip->keys[5]) {
+        chip->regs[x] = 5;
+    }
+    else if(chip->keys[6]) {
+        chip->regs[x] = 6;
+    }
+    else if(chip->keys[7]) {
+        chip->regs[x] = 7;
+    }
+    else if(chip->keys[8]) {
+        chip->regs[x] = 8;
+    }
+    else if(chip->keys[9]) {
+        chip->regs[x] = 9;
+    }
+    else if(chip->keys[10]) {
+        chip->regs[x] = 10;
+    }
+    else if(chip->keys[11]) {
+        chip->regs[x] = 11;
+    }
+    else if(chip->keys[12]) {
+        chip->regs[x] = 12;
+    }
+    else if(chip->keys[13]) {
+        chip->regs[x] = 13;
+    }
+    else if(chip->keys[14]) {
+        chip->regs[x] = 14;
+    }
+    else if(chip->keys[15]) {
+        chip->regs[x] = 15;
+    }
+}
+
 void op_fx15(u16* opcode, machine_t* chip);
 void op_fx18(u16* opcode, machine_t* chip);
 void op_fx1e(u16* opcode, machine_t* chip);

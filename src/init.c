@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 
+#include "opcodes.h"
+
 bool init_sdl(context_t* ctx, config_t* cfg) {
     if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         return false;
@@ -39,7 +41,76 @@ void main_loop(context_t* ctx, machine_t* chip) {
             switch(event.type) {
                 case SDL_QUIT:
                     run = false;
-                break;
+                    break;
+
+                case SDL_KEYDOWN:
+                    switch(event.key.keysym.scancode) {
+                        case SDL_SCANCODE_Q:
+                            chip->keys[0] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_W:
+                            chip->keys[1] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_E:
+                            chip->keys[2] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_R:
+                            chip->keys[3] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_T:
+                            chip->keys[4] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_Y:
+                            chip->keys[5] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_U:
+                            chip->keys[6] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_I:
+                            chip->keys[7] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_O:
+                            chip->keys[8] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_P:
+                            chip->keys[9] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_A:
+                            chip->keys[10] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_S:
+                            chip->keys[11] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_D:
+                            chip->keys[12] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_F:
+                            chip->keys[13] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_G:
+                            chip->keys[14] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                        case SDL_SCANCODE_H:
+                            chip->keys[15] = true;
+                            op_fx0a(&chip->opcode, chip);
+                            break;
+                    }
+                    break;
             }
         }
 
