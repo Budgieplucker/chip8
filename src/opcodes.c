@@ -87,8 +87,8 @@ void op_2nnn(u16* opcode, machine_t* chip) {
 
 void op_3xnn(u16* opcode, machine_t* chip) {
 
-    u8 x = (*opcode & 0x0F00) >> 8;
-    u8 nn = *opcode & 0x00FF;
+    u16 x = (*opcode & 0x0F00) >> 8;
+    u16 nn = *opcode & 0x00FF;
 
     if(x == nn) {
         chip->pc+=2;
@@ -97,8 +97,8 @@ void op_3xnn(u16* opcode, machine_t* chip) {
 
 void op_4xnn(u16* opcode, machine_t* chip) {
 
-    u8 x = (*opcode & 0x0F00) >> 8;
-    u8 nn = *opcode & 0x00FF;
+    u16 x = (*opcode & 0x0F00) >> 8;
+    u16 nn = *opcode & 0x00FF;
 
     if(x != nn) {
         chip->pc+=2;
@@ -107,8 +107,8 @@ void op_4xnn(u16* opcode, machine_t* chip) {
 
 void op_5xy0(u16* opcode, machine_t* chip) {
 
-    u8 x = (*opcode & 0x0F00) >> 8;
-    u8 Y = (*opcode & 0x00F0) >> 4;
+    u16 x = (*opcode & 0x0F00) >> 8;
+    u16 Y = (*opcode & 0x00F0) >> 4;
 
     if(x == Y) {
         chip->pc+=2;
@@ -117,34 +117,34 @@ void op_5xy0(u16* opcode, machine_t* chip) {
 
 void op_8xy0(u16* opcode, machine_t* chip) {
 
-    u8 x = (*opcode & 0x0F00) >> 8;
-    u8 y = (*opcode & 0x00F0) >> 4;
+    u16 x = (*opcode & 0x0F00) >> 8;
+    u16 y = (*opcode & 0x00F0) >> 4;
     chip->regs[x] = y;
 }
 
 void op_8xy1(u16* opcode, machine_t* chip) {
     
-    u8 x = (*opcode & 0x0F00) >> 8;
-    u8 y = (*opcode & 0x00F0) >> 4;
+    u16 x = (*opcode & 0x0F00) >> 8;
+    u16 y = (*opcode & 0x00F0) >> 4;
     chip->regs[x] |= y;
 }
 
 void op_8xy2(u16* opcode, machine_t* chip) {
 
-    u8 x = (*opcode & 0x0F00) >> 8;
-    u8 y = (*opcode & 0x00F0) >> 4;
+    u16 x = (*opcode & 0x0F00) >> 8;
+    u16 y = (*opcode & 0x00F0) >> 4;
     chip->regs[x] &= y;
 }
 
 void op_8xy3(u16* opcode, machine_t* chip) {
-    u8 x = (*opcode & 0x0F00) >> 8;
-    u8 y = (*opcode & 0x00F0) >> 4;
+    u16 x = (*opcode & 0x0F00) >> 8;
+    u16 y = (*opcode & 0x00F0) >> 4;
     chip->regs[x] ^= y;
 }
 
 void op_8xy4(u16* opcode, machine_t* chip) {
-    u8 x = (*opcode & 0xFF);
-    u8 y = (*opcode & 0x00F0) >> 8;
+    u16 x = (*opcode & 0x0F00) >> 8;
+    u16 y = (*opcode & 0x00F0) >> 4;
     u16 res = (x + y);
 
     if((res < sizeof(u8))) {
@@ -159,8 +159,9 @@ void op_8xy4(u16* opcode, machine_t* chip) {
 }
 
 void op_8xy5(u16* opcode, machine_t* chip) {
-    u8 x = (*opcode & 0xFF);
-    u8 y = (*opcode & 0x00F0) >> 8;
+    
+    u8 x = *opcode & 0xFF;
+    u8 y = *opcode & 0x00F0;
 
     if(x > y) {
         chip->regs[0xF] = 1;
