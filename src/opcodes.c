@@ -162,8 +162,8 @@ void op_8xy4(u16* opcode, machine_t* chip) {
 
 void op_8xy5(u16* opcode, machine_t* chip) {
     
-    u8 x = *opcode & 0xFF;
-    u8 y = *opcode & 0x00F0;
+    u8 x = (*opcode & 0x0F00) >> 8;
+    u8 y = (*opcode & 0x00F0) >> 4;
 
     if(x > y) {
         chip->regs[0xF] = 1;
@@ -177,23 +177,100 @@ void op_8xy5(u16* opcode, machine_t* chip) {
 }
 
 void op_8xy6(u16* opcode, machine_t* chip) {
+    
+    u8 x = (*opcode & 0x0F00) >> 8;
+    
+    if((chip->regs[x] & 0xFF) == 1) {
+        chip->regs[0xF] = 1;
+    } 
+    else {
+        chip->regs[0xF] = 0;
+    }
 
+    chip->regs[x] /= 2;
 }
 
 void op_8xy7(u16* opcode, machine_t* chip) {
+    
+    u8 x = (*opcode & 0x0F00) >> 8;
+    u8 y = (*opcode & 0x00F0) >> 4;
 
+    if(chip->regs[y] > chip->regs[x]) {
+        chip->regs[0xF] = 1;
+    } 
+    else {
+        chip->regs[0xF] = 0;
+    }
+
+    chip->regs[y] -= chip->regs[x];
 }
 
 void op_8xye(u16* opcode, machine_t* chip) {
+    
+    u8 x = (*opcode & 0x0F00) >> 8;
+    u8 y = (*opcode & 0x00F0) >> 4;
 
+    if(chip->regs[x] == 1) {
+        chip->regs[0xF] = 1;
+    } 
+    else {
+        chip->regs[0xF] = 0;
+    }
+
+    chip->regs[x] *= 2;
 }
 
-void op_9xy0(u16* opcode, machine_t* chip);
-void op_bnnn(u16* opcode, machine_t* chip);
-void op_cxnn(u16* opcode, machine_t* chip);
-void op_ex9e(u16* opcode, machine_t* chip);
-void op_exa1(u16* opcode, machine_t* chip);
-void op_fx07(u16* opcode, machine_t* chip);
+void op_9xy0(u16* opcode, machine_t* chip) {
+
+    u8 x = (*opcode & 0x0F00) >> 8;
+    u8 y = (*opcode & 0x00F0) >> 4;
+
+    if(chip->regs[x] != chip->regs[y]) {
+        chip->pc += 2;
+    }
+}
+
+void op_bnnn(u16* opcode, machine_t* chip) {
+
+    u16 nnn = *opcode & 0x0FFF;
+    chip->pc = (nnn + chip->regs[0]);
+}
+
+void op_cxnn(u16* opcode, machine_t* chip) {
+    
+    u8 x = (*opcode & 0x0F00) >> 8;
+    u8 rnd = rand() % (sizeof(u8) + 1 - 0) + 0;
+    u8 nn = *opcode & 0x00FF;
+    chip->regs[x] = (rnd & nn);
+}
+
+void op_ex9e(u16* opcode, machine_t* chip) {
+
+    u8 x = (*opcode & 0x0F00) >> 8;
+
+    for(int i = 0; i < sizeof(chip->keys); i++) {
+        if(chip->keys[i] == chip->regs[x]) {
+            chip->pc += 2;
+        }
+    }
+}
+
+void op_exa1(u16* opcode, machine_t* chip) {
+    
+    u8 x = (*opcode & 0x0F00) >> 8;
+
+    for(int i = 0; i < sizeof(chip->keys); i++) {
+        if(chip->keys[i] != chip->regs[x]) {
+            chip->pc += 2;
+        }
+    }
+}
+
+void op_fx07(u16* opcode, machine_t* chip) {
+    
+    u8 x = (*opcode & 0x0F00) >> 8;
+    chip->regs[x] = chip->dt;
+}
 
 // Key events
 void op_fx0a(u16* opcode, machine_t* chip) {
@@ -249,12 +326,33 @@ void op_fx0a(u16* opcode, machine_t* chip) {
     else if(chip->keys[15]) {
         chip->regs[x] = 15;
     }
+    else {
+        chip->pc -= 2;
+    }
 }
 
-void op_fx15(u16* opcode, machine_t* chip);
-void op_fx18(u16* opcode, machine_t* chip);
-void op_fx1e(u16* opcode, machine_t* chip);
-void op_fx29(u16* opcode, machine_t* chip);
+void op_fx15(u16* opcode, machine_t* chip) {
+   
+    u8 x = (*opcode & 0x0F00) >> 8;
+    chip->dt = chip->regs[x];
+}
+
+void op_fx18(u16* opcode, machine_t* chip) {
+
+    u8 x = (*opcode & 0x0F00) >> 8;
+    chip->st = chip->regs[x];
+}
+
+void op_fx1e(u16* opcode, machine_t* chip) {
+
+    u8 x = (*opcode & 0x0F00) >> 8;
+    chip->i_reg += chip->regs[x];
+}
+
+void op_fx29(u16* opcode, machine_t* chip) {
+    
+}
+
 void op_fx33(u16* opcode, machine_t* chip);
 void op_fx55(u16* opcode, machine_t* chip);
 void op_fx65(u16* opcode, machine_t* chip);

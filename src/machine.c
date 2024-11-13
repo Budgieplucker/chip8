@@ -165,5 +165,49 @@ void execute(machine_t* chip) {
                     break;
             }
         break;
+
+        case 0xF:
+            switch(opcode & 0x000F) {
+                case 0x000A:
+                    op_fx0a(&opcode, chip);
+                    break;
+                
+                case 0x0007:
+                    op_fx07(&opcode, chip);
+                    break;
+
+                case 0x0005:
+                    switch(opcode & 0x00F0) {
+                        case 0x0010:
+                            op_fx15(&opcode, chip);
+                            break;
+                        
+                        case 0x0050:
+                            // op_fx55(&opcode, chip);
+                            break;
+
+                        case 0x0060:
+                            // op_fx65(&opcode, chip);
+                            break;
+                    }
+                    break;
+
+                case 0x0008:
+                    op_fx18(&opcode, chip);
+                    break;
+
+                case 0x000E:
+                    op_fx1e(&opcode, chip);
+                    break;
+
+                case 0x0009:
+                    op_fx29(&opcode, chip);
+                    break;
+
+                case 0x0003:
+                    // op_fx33(&opcode, chip);
+                    break;
+            }
+            break;
     }
 }
